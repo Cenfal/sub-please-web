@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy — Subs-Please</title>
+  <meta name="description" content="Privacy Policy for the Subs Please browser extension." />
+  <style>
+    body { font-family: Arial, sans-serif; padding: 40px; max-width: 800px; margin: auto; line-height: 1.6; color: #333; }
+    h1, h2, h3 { color: #222; }
+    a { color: #007bff; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .muted { color: #666; font-size: 0.95em; }
+    .back { display: inline-block; margin-bottom: 20px; }
+  </style>
+</head>
+<body>
+  <a class="back" href="index.html">← Back to Home</a>
+  <h1>Privacy Policy — Subs-Please</h1>
+  <p class="muted">Effective date: 2025-08-15</p>
+  <p class="muted">Last updated: 2025-08-15</p>
+
+  <p>
+    SUBS-PLEASE ("we", "us", "our") provides the Subs-Please Chrome extension ("Extension") that captures audio from a user-selected browser tab to provide live transcription and optional translation.
+  </p>
+
+  <h2>1) Who we are</h2>
+  <p>
+    SUBS-PLEASE ("we", "us", "our") provides the Subs-Please Chrome extension ("Extension") that captures audio from a user-selected browser tab to provide live transcription and optional translation.
+  </p>
+
+  <h2>2) Single purpose</h2>
+  <p>
+    The Extension’s single purpose is to capture audio from the active tab and display live subtitles (and optional translation) as an on-page overlay.
+  </p>
+
+  <h2>3) Data we collect</h2>
+  <h3>a) Account and identity (PII)</h3>
+  <ul>
+    <li>Google account basic profile and email address obtained via Chrome Identity OAuth ("email", "profile" scopes).</li>
+    <li><strong>Purpose:</strong> authentication, entitlement/subscription management, and personalization.</li>
+  </ul>
+
+  <h3>b) Authentication information</h3>
+  <ul>
+    <li>Application session token (JWT) issued by our backend after OAuth code exchange.</li>
+    <li><strong>Purpose:</strong> authorize API requests to our services.</li>
+    <li><strong>Storage (device):</strong> <code>chrome.storage.local</code> key <code>lt_jwt</code> and optional <code>lt_user</code></li>
+  </ul>
+
+  <h3>c) Payment/subscription metadata</h3>
+  <ul>
+    <li>Subscription status and checkout session identifiers (no credit card numbers handled by the Extension).</li>
+    <li><strong>Purpose:</strong> enable paid features and billing.</li>
+    <li><strong>Flow:</strong> created by backend when you click Upgrade in the popup.</li>
+  </ul>
+
+  <h3>d) Content processed to provide features</h3>
+  <ul>
+    <li>Tab audio stream selected by you and the resulting transcripts/translations.</li>
+    <li><strong>Purpose:</strong> real-time transcription/translation. Audio is captured only while you explicitly start capture and is limited to the chosen tab.</li>
+  </ul>
+
+  <h3>e) Device/technical data (limited)</h3>
+  <ul>
+    <li>Standard network metadata (e.g., IP address, user agent) processed by our backend and service providers as part of secure HTTPS requests.</li>
+  </ul>
+
+  <p><strong>We do not collect:</strong></p>
+  <ul>
+    <li>Health information, precise location (GPS), keystrokes/mouse/scroll behavior, or full browsing history.</li>
+    <li>Page text/DOM content beyond rendering our overlay UI. Note: audio from the tab may include spoken personal communications.</li>
+  </ul>
+
+  <h2>4) How we use data</h2>
+  <ul>
+    <li>To authenticate you and maintain a session.</li>
+    <li>To provide live transcription/translation from the selected tab’s audio.</li>
+    <li>To manage subscriptions and payments.</li>
+    <li>To ensure reliability, detect abuse, and improve service (aggregated, minimal telemetry if used).</li>
+  </ul>
+
+  <h2>5) Storage and retention</h2>
+  <p><strong>On your device:</strong></p>
+  <ul>
+    <li><code>chrome.storage.local</code>: <code>lt_jwt</code>, <code>lt_user</code>; <code>localStorage</code>: <code>sourceLang</code>, <code>targetLang</code>.</li>
+    <li>You can clear these via browser settings or by uninstalling the Extension.</li>
+  </ul>
+  <p><strong>On our servers:</strong></p>
+  <ul>
+    <li>Account and subscription records retained as required to operate the service and comply with legal/financial obligations.</li>
+    <li>Audio/transcripts are processed to deliver features and are not retained by default beyond what is necessary for processing. If retention is ever introduced (e.g., user-enabled saving), we will update this policy.</li>
+  </ul>
+
+  <h2>6) Data sharing and processors</h2>
+  <p>We do not sell your data.</p>
+  <p>We share data only with service providers necessary to operate the Extension:</p>
+  <ul>
+    <li>Google (OAuth via Chrome Identity) for sign-in.</li>
+    <li>Payment processor (e.g., Stripe) for checkout and subscription management.</li>
+    <li>Speech-to-text and translation providers to process your tab audio and generate subtitles.</li>
+  </ul>
+  <p>All processors are bound by contracts and receive only the minimum data necessary.</p>
+
+  <h2>7) Permissions and how they’re used</h2>
+  <ul>
+    <li><code>activeTab</code>/<code>tabs</code>: Determine the current active tab and open checkout when you click Upgrade.</li>
+    <li><code>tabCapture</code>: Capture the active tab’s audio when you click Start.</li>
+    <li><code>scripting</code>/host permissions: Insert the overlay UI script to display subtitles on the selected page.</li>
+    <li><code>offscreen</code>: Keep the audio pipeline running if the popup closes (no visible UI).</li>
+    <li><code>storage</code>: Store JWT and language preferences.</li>
+    <li><code>identity</code>: Sign in with Google via Chrome Identity OAuth.</li>
+  </ul>
+
+  <h2>8) Security</h2>
+  <ul>
+    <li><strong>Transport security:</strong> HTTPS/TLS for all network communication.</li>
+    <li><strong>Access control:</strong> least-privilege design, user-initiated capture only.</li>
+    <li><strong>On-device data</strong> limited to session token and preferences.</li>
+  </ul>
+
+  <h2>9) Your choices and rights</h2>
+  <ul>
+    <li><strong>Start/Stop:</strong> You choose when to start/stop capture; no background recording.</li>
+    <li><strong>Sign out:</strong> Clear data via <code>chrome://extensions</code> &gt; Details &gt; Clear data or remove the Extension.</li>
+    <li><strong>Access/Deletion:</strong> Contact <a href="mailto:cemilenfal@gmail.com">cemilenfal@gmail.com</a> to request access to or deletion of your account data.</li>
+    <li><strong>Region-specific rights (e.g., GDPR/CCPA):</strong> We honor applicable rights to access, correct, delete, or restrict processing.</li>
+  </ul>
+
+  <h2>10) Children’s privacy</h2>
+  <p>
+    The Extension is not directed to children under 13 (or the minimum age required in your jurisdiction). We do not knowingly collect data from children.
+  </p>
+
+  <h2>11) International transfers</h2>
+  <p>
+    Data may be processed in countries other than your own. We use appropriate safeguards for such transfers where required by law.
+  </p>
+
+  <h2>12) Changes to this policy</h2>
+  <p>
+    We may update this policy as our practices or legal requirements change. Material changes will be posted with a new “Last updated” date.
+  </p>
+
+  <h2>13) Contact</h2>
+  <p>
+    Questions or requests: <a href="mailto:cemilenfal@gmail.com">cemilenfal@gmail.com</a>
+  </p>
+</body>
+</html>
