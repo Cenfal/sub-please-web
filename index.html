@@ -235,7 +235,7 @@
             <label for="anyAmount" style="color:#475569; font-size:14px;">Amount</label>
             <select id="anyAmount" class="select" aria-label="Purchase amount">
               <option value="0">$0</option>
-              <option value="0o5">$0.5</option>
+              <option value="0.5">$0.5</option>
               <option value="5" selected>$5</option>
               <option value="10">$10</option>
               <option value="25">$25</option>
@@ -290,14 +290,14 @@
       var minutesPerDollar = 60;
 
       function updateUI() {
-        var v = anySelect ? parseInt(anySelect.value || '1', 10) : 1;
+        var v = anySelect ? parseFloat(anySelect.value || '1') : 1;
         // Update destination for amounts not handled via Polar popup
-        if (v !== 0 && v !== 10 && v !== 25) {
+        if (v !== 0 && v !== 0.5 && v !== 5 && v !== 10 && v !== 25 && v !== 50 && v !== 100) {
           anyBtn.href = 'https://example.com/checkout?amount=' + encodeURIComponent(v);
           anyBtn.setAttribute('target', '_blank');
           anyBtn.setAttribute('rel', 'noopener');
         } else {
-          // For $0, $10, $25 open the Polar popup via hidden anchors
+          // For specific amounts, open the Polar popup via hidden anchors
           anyBtn.href = '#';
           anyBtn.removeAttribute('target');
           anyBtn.removeAttribute('rel');
@@ -314,12 +314,12 @@
       if (anySelect && anyBtn) {
         anySelect.addEventListener('change', updateUI);
         anyBtn.addEventListener('click', function(e) {
-          var v = anySelect ? parseInt(anySelect.value || '1', 10) : 1;
+          var v = anySelect ? parseFloat(anySelect.value || '1') : 1;
           if (v === 0 && polarZero) {
             e.preventDefault();
             // Trigger Polar checkout popup
             polarZero.click();
-          } else if (v === 0o5 && polarZeroFive) {
+          } else if (v === 0.5 && polarZeroFive) {
             e.preventDefault();
             // Trigger Polar checkout popup
             polarZeroFive.click();
