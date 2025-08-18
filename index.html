@@ -12,7 +12,6 @@
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, "Helvetica Neue", sans-serif;
       color: #222;
       background: #fff;
-      /* Prevent page scroll on desktop layout */
       overflow: hidden;
     }
 
@@ -30,9 +29,9 @@
       background: linear-gradient(135deg, #f5f7ff 0%, #eef3ff 100%);
     }
     .left img {
-      width: min(70%, 420px);
+      width: min(60%, 360px);
       height: auto;
-      max-height: 70vh;
+      max-height: 60vh;
       border-radius: 12px;
       box-shadow: 0 8px 24px rgba(16, 24, 40, 0.12);
     }
@@ -41,18 +40,19 @@
       display: flex;
       flex-direction: column;
       padding: clamp(24px, 4vw, 48px);
-      gap: 12px;
+      gap: 16px;
     }
 
+    header { margin-bottom: 4px; }
     h1 {
-      margin: 0 0 4px 0;
+      margin: 0 0 6px 0;
       color: #111;
       font-weight: 700;
-      font-size: clamp(24px, 3.2vw, 40px);
+      font-size: clamp(26px, 3.2vw, 42px);
       line-height: 1.1;
     }
     .lead {
-      margin: 0 0 12px 0;
+      margin: 0 0 14px 0;
       color: #555;
       font-size: clamp(14px, 1.4vw, 18px);
     }
@@ -70,6 +70,87 @@
     }
     .btn:hover { background: #0056b3; }
     .btn:active { transform: translateY(1px); }
+    .btn--buy { background: linear-gradient(135deg, #16a34a, #22c55e); }
+    .btn--buy:hover { background: linear-gradient(135deg, #15803d, #16a34a); }
+
+    /* Pricing */
+    .pricing {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 8px;
+    }
+    .plan {
+      padding: 16px;
+      border-radius: 14px;
+      background: #fff;
+      border: 1px solid #e7e9f2;
+      box-shadow: 0 8px 20px rgba(16,24,40,0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .plan-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0;
+      color: #1f2937;
+      font-size: clamp(16px, 1.6vw, 18px);
+      font-weight: 700;
+    }
+    .badge {
+      font-size: 12px;
+      color: #7c2d12;
+      background: #fff7ed;
+      border: 1px solid #fed7aa;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-weight: 600;
+    }
+    .copy {
+      margin: 0;
+      color: #475569;
+      font-size: 14px;
+    }
+    .price {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+    .price-amount {
+      font-size: clamp(26px, 3.2vw, 36px);
+      font-weight: 800;
+      color: #111827;
+    }
+    .price-note {
+      color: #6b7280;
+      font-size: 14px;
+    }
+    .strikethrough {
+      text-decoration: line-through;
+      color: #9ca3af;
+      font-weight: 600;
+    }
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .select {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background-color: #fff;
+      border: 1px solid #cbd5e1;
+      color: #0f172a;
+      padding: 10px 12px;
+      border-radius: 10px;
+      min-width: 140px;
+      font-weight: 600;
+      box-shadow: 0 1px 0 rgba(15,23,42,0.02);
+    }
 
     .features-title {
       margin: 12px 0 6px 0;
@@ -92,13 +173,21 @@
     footer a { color: #007bff; text-decoration: none; }
     footer a:hover { text-decoration: underline; }
 
-    /* Mobile/Small screens: stack and allow scroll */
+    /* Helper note */
+    .minutes-note {
+      margin: 0;
+      color: #6b7280;
+      font-size: 13px;
+    }
+
+    /* Mobile/Small screens */
     @media (max-width: 800px) {
       body { overflow: auto; }
       .split { grid-template-columns: 1fr; min-height: auto; }
       .left { padding: 24px 16px; }
       .left img { width: 240px; max-height: none; }
       .right { padding: 24px 16px; }
+      .pricing { grid-template-columns: 1fr; }
     }
   </style>
   <meta name="description" content="Subs Please – Real-time translated subtitles for any video in your browser." />
@@ -109,24 +198,128 @@
     <section class="left" aria-label="Logo">
       <img src="logo.png" alt="Subs Please logo" />
     </section>
+
     <section class="right" aria-label="Details and features">
       <header>
         <h1>Subs Please</h1>
         <p class="lead">Real-time translated subtitles for any video in your browser.</p>
       </header>
+
       <div>
         <a class="btn" href="https://chrome.google.com/webstore/detail/jkonhlobjgfaeiflenbfgiemkmnfpkol" target="_blank" rel="noopener">Add to Chrome</a>
       </div>
+
+      <!-- Pricing -->
+      <section class="pricing" aria-label="Pricing">
+        <!-- Card 1: $1 Launch Special -->
+        <article class="plan" aria-label="Launch Special">
+          <h3 class="plan-header">
+            Launch Special <span class="badge">Limited time</span>
+          </h3>
+          <p class="copy">Normally <span class="strikethrough">$10</span>. During launch, pay just <strong>$1</strong> for <strong>60 minutes of usage</strong>.</p>
+          <div class="price">
+            <div class="price-amount">$1</div>
+            <div class="price-note">one-time</div>
+          </div>
+          <a id="buyOneButton" class="btn btn--buy" href="https://buy.polar.sh/polar_cl_0vRcZgTmWwv807RysTgRDH7kVCBE3fhwbdQfC08NTDR" data-polar-checkout data-polar-checkout-theme="dark">Buy for $1</a>
+          <script src="https://cdn.jsdelivr.net/npm/@polar-sh/checkout@0.1/dist/embed.global.js" defer data-auto-init></script>
+        </article>
+
+        <!-- Card 2: Pay what you want -->
+        <article class="plan" aria-label="Pay what you want">
+          <h3 class="plan-header">
+            Pay What You Want
+          </h3>
+          <p class="copy">Choose any amount to support the project.</p>
+          <div class="controls" style="margin-top:4px;">
+            <label for="anyAmount" style="color:#475569; font-size:14px;">Amount</label>
+            <select id="anyAmount" class="select" aria-label="Purchase amount">
+              <option value="1" selected>$1</option>
+              <option value="0">$0</option>
+              <option value="5">$5</option>
+              <option value="10">$10</option>
+              <option value="25">$25</option>
+              <option value="50">$50</option>
+              <option value="100">$100</option>
+            </select>
+          </div>
+          <p id="minutesCalc" class="minutes-note">Every $1 gives you 60 minutes. Selected: $1 → 60 minutes.</p>
+          <a id="buyAnyButton" class="btn btn--buy" href="https://example.com/checkout?amount=1" target="_blank" rel="noopener">Buy for $1</a>
+          <!-- Hidden Polar checkout link for the $10 option -->
+          <a id="polarTen" href="https://buy.polar.sh/polar_cl_zisNg2gWEvcJyzwxWgpcZPlpu1MKjPvYZqSpm16ySLn" data-polar-checkout data-polar-checkout-theme="dark" style="display:none">Purchase</a>
+          <!-- Hidden Polar checkout link for the $25 option -->
+          <a id="polarTwentyFive" href="https://buy.polar.sh/polar_cl_FNsMM4rNeiT0wdnHJDcmjxWhJiDXgCTvekcWH2C7S1r" data-polar-checkout data-polar-checkout-theme="dark" style="display:none">Purchase</a>
+          <!-- Hidden Polar checkout link for the $0 option -->
+          <a id="polarZero" href="https://buy.polar.sh/polar_cl_Lc5vbk8TVAjhDOFdXbqyeqBj2fccNeCPMcNLa4RQd5Y" data-polar-checkout data-polar-checkout-theme="dark" style="display:none">Purchase</a>
+        </article>
+      </section>
+
       <h2 class="features-title">Features</h2>
       <ul class="features">
         <li>Real-time speech-to-text and translation</li>
         <li>Works with YouTube, live streams, and more</li>
-        <li>Secure – no audio stored</li>
+        <li>Secure — no audio stored</li>
       </ul>
+
       <footer>
         <a href="privacy.html">Privacy Policy</a>
       </footer>
     </section>
   </main>
+
+  <script>
+    (function() {
+      var anySelect = document.getElementById('anyAmount');
+      var anyBtn = document.getElementById('buyAnyButton');
+      var polarTen = document.getElementById('polarTen');
+      var polarTwentyFive = document.getElementById('polarTwentyFive');
+      var polarZero = document.getElementById('polarZero');
+      var minutesCalc = document.getElementById('minutesCalc');
+      var minutesPerDollar = 60;
+
+      function updateUI() {
+        var v = anySelect ? parseInt(anySelect.value || '1', 10) : 1;
+        // Update destination for amounts not handled via Polar popup
+        if (v !== 0 && v !== 10 && v !== 25) {
+          anyBtn.href = 'https://example.com/checkout?amount=' + encodeURIComponent(v);
+          anyBtn.setAttribute('target', '_blank');
+          anyBtn.setAttribute('rel', 'noopener');
+        } else {
+          // For $0, $10, $25 open the Polar popup via hidden anchors
+          anyBtn.href = '#';
+          anyBtn.removeAttribute('target');
+          anyBtn.removeAttribute('rel');
+        }
+        if (minutesCalc) {
+          var minutes = v * minutesPerDollar;
+          minutesCalc.textContent = 'Every $1 gives you 60 minutes. Selected: $' + v + ' → ' + minutes + ' minutes.';
+        }
+        if (anyBtn) {
+          anyBtn.textContent = 'Buy for $' + v;
+        }
+      }
+
+      if (anySelect && anyBtn) {
+        anySelect.addEventListener('change', updateUI);
+        anyBtn.addEventListener('click', function(e) {
+          var v = anySelect ? parseInt(anySelect.value || '1', 10) : 1;
+          if (v === 0 && polarZero) {
+            e.preventDefault();
+            // Trigger Polar checkout popup
+            polarZero.click();
+          } else if (v === 10 && polarTen) {
+            e.preventDefault();
+            // Trigger Polar checkout popup
+            polarTen.click();
+          } else if (v === 25 && polarTwentyFive) {
+            e.preventDefault();
+            // Trigger Polar checkout popup
+            polarTwentyFive.click();
+          }
+        });
+        updateUI();
+      }
+    })();
+  </script>
 </body>
 </html>
