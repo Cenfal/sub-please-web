@@ -251,6 +251,10 @@
           <a id="polarTwentyFive" href="https://buy.polar.sh/polar_cl_FNsMM4rNeiT0wdnHJDcmjxWhJiDXgCTvekcWH2C7S1r" data-polar-checkout data-polar-checkout-theme="dark" style="display:none">Purchase</a>
           <!-- Hidden Polar checkout link for the $0 option -->
           <a id="polarZero" href="https://buy.polar.sh/polar_cl_Lc5vbk8TVAjhDOFdXbqyeqBj2fccNeCPMcNLa4RQd5Y" data-polar-checkout data-polar-checkout-theme="dark" style="display:none">Purchase</a>
+          <a id="polarFifty" href="https://buy.polar.sh/polar_cl_YvnmNV6gIHZa8ZYfz2Mfz7ybI7JtCCEkXEubc2GLGcd"
+            data-polar-checkout data-polar-checkout-theme="dark" style="display:none">Purchase</a>
+          <a id="polarAHundred" href="https://buy.polar.sh/polar_cl_eD1RYyTnJcFi2sooE6kdj3aiD0I1QDj29NBuW2KOYcf"
+            data-polar-checkout data-polar-checkout-theme="dark" style="display:none">Purchase</a>
         </article>
       </section>
 
@@ -273,6 +277,8 @@
       var anyBtn = document.getElementById('buyAnyButton');
       var polarTen = document.getElementById('polarTen');
       var polarTwentyFive = document.getElementById('polarTwentyFive');
+      var polarFifty = document.getElementById('polarFifty');
+      var polarAHundred = document.getElementById('polarAHundred');
       var polarZero = document.getElementById('polarZero');
       var minutesCalc = document.getElementById('minutesCalc');
       var minutesPerDollar = 60;
@@ -315,6 +321,14 @@
             e.preventDefault();
             // Trigger Polar checkout popup
             polarTwentyFive.click();
+          } else if (v === 50 && polarFifty) {
+            e.preventDefault();
+            // Trigger Polar checkout popup
+            polarFifty.click();
+          } else if (v === 100 && polarAHundred) {
+            e.preventDefault();
+            // Trigger Polar checkout popup
+            polarAHundred.click();
           }
         });
         updateUI();
