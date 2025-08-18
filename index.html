@@ -246,6 +246,8 @@
           <p id="minutesCalc" class="minutes-note">Every $1 gives you 60 minutes. Selected: $1 → 60 minutes.</p>
           <a id="buyAnyButton" class="btn btn--buy" href="https://example.com/checkout?amount=1" target="_blank" rel="noopener">Buy for $1</a>
           <!-- Hidden Polar checkout link for the $10 option -->
+          <a id="polarFive" href="https://buy.polar.sh/polar_cl_tsPdT3wM5TbGjcd1u6Vz9bJfmqgOpvwB7hlBN0yxWle" data-polar-checkout data-polar-checkout-theme="dark" style="display:none">Purchase</a>
+          <!-- Hidden Polar checkout link for the $10 option -->
           <a id="polarTen" href="https://buy.polar.sh/polar_cl_zisNg2gWEvcJyzwxWgpcZPlpu1MKjPvYZqSpm16ySLn" data-polar-checkout data-polar-checkout-theme="dark" style="display:none">Purchase</a>
           <!-- Hidden Polar checkout link for the $25 option -->
           <a id="polarTwentyFive" href="https://buy.polar.sh/polar_cl_FNsMM4rNeiT0wdnHJDcmjxWhJiDXgCTvekcWH2C7S1r" data-polar-checkout data-polar-checkout-theme="dark" style="display:none">Purchase</a>
@@ -275,6 +277,7 @@
     (function() {
       var anySelect = document.getElementById('anyAmount');
       var anyBtn = document.getElementById('buyAnyButton');
+      var polarFive = document.getElementById('polarFive');
       var polarTen = document.getElementById('polarTen');
       var polarTwentyFive = document.getElementById('polarTwentyFive');
       var polarFifty = document.getElementById('polarFifty');
@@ -313,6 +316,10 @@
             e.preventDefault();
             // Trigger Polar checkout popup
             polarZero.click();
+          } else if (v === 5 && polarFive) {
+            e.preventDefault();
+            // Trigger Polar checkout popup
+            polarFive.click();
           } else if (v === 10 && polarTen) {
             e.preventDefault();
             // Trigger Polar checkout popup
