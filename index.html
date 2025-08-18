@@ -322,7 +322,7 @@
             <div class="price-amount">$1</div>
             <div class="price-note">one-time</div>
           </div>
-          <a id="buyOneButton" class="btn btn--buy" href="https://buy.polar.sh/polar_cl_0vRcZgTmWwv807RysTgRDH7kVCBE3fhwbdQfC08NTDR" data-polar-checkout data-polar-checkout-theme="dark">Buy for $1</a>
+          <a id="buyOneButton" class="btn btn--buy" href="#">Buy for $1</a>
           <script src="https://cdn.jsdelivr.net/npm/@polar-sh/checkout@0.1/dist/embed.global.js" defer data-auto-init></script>
         </article>
 
@@ -345,8 +345,11 @@
             </select>
           </div>
           <p id="minutesCalc" class="minutes-note">Every $1 gives you 60 minutes. Selected: $1 → 60 minutes.</p>
-          <a id="buyAnyButton" class="btn btn--buy" href="https://example.com/checkout?amount=1" target="_blank" rel="noopener">Buy for $1</a>
+          <a id="buyAnyButton" class="btn btn--buy" href="#">Buy for $1</a>
           <a id="polarZeroFive" href="https://buy.polar.sh/polar_cl_8szKgy19zAXuCVilXzKBOd1RKQHAxCGjDwYgN0J9JlV" data-polar-checkout data-polar-checkout-theme="dark" style="display:none">Purchase</a>
+
+          <!-- Hidden Polar checkout link for the $1 launch special -->
+          <a id="polarOne" href="https://buy.polar.sh/polar_cl_0vRcZgTmWwv807RysTgRDH7kVCBE3fhwbdQfC08NTDR" data-polar-checkout data-polar-checkout-theme="dark" style="display:none">Purchase</a>
 
           <!-- Hidden Polar checkout link for the $5 option -->
           <a id="polarFive" href="https://buy.polar.sh/polar_cl_tsPdT3wM5TbGjcd1u6Vz9bJfmqgOpvwB7hlBN0yxWle" data-polar-checkout data-polar-checkout-theme="dark" style="display:none">Purchase</a>
@@ -399,12 +402,13 @@
   <script>
     (function() {
       // Replace with your actual backend API URL
-      const API_BASE_URL = 'https://localhost:3000/payments';
+      const API_BASE_URL = 'http://localhost:3000/payments';
       
       var anySelect = document.getElementById('anyAmount');
       var anyBtn = document.getElementById('buyAnyButton');
       var buyOneButton = document.getElementById('buyOneButton');
       var polarZeroFive = document.getElementById('polarZeroFive');
+      var polarOne = document.getElementById('polarOne');
       var polarFive = document.getElementById('polarFive');
       var polarTen = document.getElementById('polarTen');
       var polarTwentyFive = document.getElementById('polarTwentyFive');
@@ -413,6 +417,12 @@
       var polarZero = document.getElementById('polarZero');
       var minutesCalc = document.getElementById('minutesCalc');
       var minutesPerDollar = 60;
+
+      // Get email from URL parameters
+      function getEmailFromURL() {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get('email');
+      }
 
       // Modal elements
       var emailModal = document.getElementById('emailModal');
@@ -426,6 +436,10 @@
       var pendingCheckoutCallback = null;
 
       function showModal() {
+        var urlEmail = getEmailFromURL();
+        if (urlEmail) {
+          emailInput.value = urlEmail;
+        }
         emailModal.classList.add('active');
         emailInput.focus();
         hideError();
@@ -436,7 +450,7 @@
         emailInput.value = '';
         hideError();
         hideLoading();
-        pendingCheckoutCallback = null;
+        // Don't clear pendingCheckoutCallback here - it will be cleared after verification
       }
 
       function showError(message) {
@@ -473,14 +487,25 @@
 
           const data = await response.json();
 
-          if (response.ok && data.verified) {
+          if (response.ok && data.verified === true) {
+            console.log('Email verified successfully, executing checkout callback');
             hideModal();
-            // Execute the pending checkout
+            // Execute the pending checkout immediately
             if (pendingCheckoutCallback) {
+              console.log('Executing pending checkout callback');
               pendingCheckoutCallback();
+              // Clear the callback after successful execution
+              pendingCheckoutCallback = null;
+            } else {
+              console.error('No pending checkout callback found');
             }
-          } else {
+          } else if (data.verified === false) {
+            // Show modal with the email filled and error message
+            emailInput.value = email;
+            showModal();
             showError(data.message || 'You are not registered with Subs Please. Please sign up first.');
+          } else {
+            showError('Unexpected response from server. Please try again.');
           }
         } catch (error) {
           console.error('Email verification error:', error);
@@ -491,7 +516,11 @@
       }
 
       // Modal event listeners
-      modalCancel.addEventListener('click', hideModal);
+      modalCancel.addEventListener('click', function() {
+        hideModal();
+        // Clear callback when user cancels
+        pendingCheckoutCallback = null;
+      });
       
       modalVerify.addEventListener('click', function() {
         const email = emailInput.value.trim();
@@ -516,6 +545,8 @@
       emailModal.addEventListener('click', function(e) {
         if (e.target === emailModal) {
           hideModal();
+          // Clear callback when user clicks outside
+          pendingCheckoutCallback = null;
         }
       });
 
@@ -555,11 +586,18 @@
       if (buyOneButton) {
         buyOneButton.addEventListener('click', function(e) {
           e.preventDefault();
+          console.log('Buy One button clicked, starting email verification');
           requireEmailVerification(function() {
             // This will be called after successful email verification
-            var buyOneButtonOriginal = document.querySelector('a[href*="polar_cl_0vRcZgTmWwv807RysTgRDH7kVCBE3fhwbdQfC08NTDR"]');
-            if (buyOneButtonOriginal) {
-              buyOneButtonOriginal.click();
+            console.log('Email verified, clicking polarOne button');
+            if (polarOne) {
+              // Add a small delay to ensure Polar script is ready
+              setTimeout(function() {
+                polarOne.click();
+                console.log('polarOne.click() executed');
+              }, 100);
+            } else {
+              console.error('polarOne element not found');
             }
           });
         });
@@ -570,25 +608,35 @@
         anyBtn.addEventListener('click', function(e) {
           e.preventDefault();
           var v = anySelect ? parseFloat(anySelect.value || '1') : 1;
+          console.log('Any amount button clicked, value:', v);
           
           requireEmailVerification(function() {
             // This will be called after successful email verification
+            console.log('Email verified, executing checkout for amount:', v);
             if (v === 0 && polarZero) {
+              console.log('Clicking polarZero');
               polarZero.click();
             } else if (v === 0.5 && polarZeroFive) {
+              console.log('Clicking polarZeroFive');
               polarZeroFive.click();
             } else if (v === 5 && polarFive) {
+              console.log('Clicking polarFive');
               polarFive.click();
             } else if (v === 10 && polarTen) {
+              console.log('Clicking polarTen');
               polarTen.click();
             } else if (v === 25 && polarTwentyFive) {
+              console.log('Clicking polarTwentyFive');
               polarTwentyFive.click();
             } else if (v === 50 && polarFifty) {
+              console.log('Clicking polarFifty');
               polarFifty.click();
             } else if (v === 100 && polarAHundred) {
+              console.log('Clicking polarAHundred');
               polarAHundred.click();
             } else {
               // For custom amounts, redirect to your checkout page
+              console.log('Opening custom checkout for amount:', v);
               window.open('https://example.com/checkout?amount=' + encodeURIComponent(v), '_blank');
             }
           });
