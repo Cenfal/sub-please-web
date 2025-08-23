@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Support — Subs Please</title>
+  <meta name="description" content="Contact Subs Please support." />
+  <style>
+    :root { color-scheme: light dark; }
+  * { box-sizing: border-box; }
+  body { font-family: system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; margin:0; padding:40px 24px 80px; line-height:1.5; color:#222; background:#fafbff; min-height:100vh; display:flex; flex-direction:column; }
+    h1 { margin-top:0; font-size:clamp(28px,4vw,40px); line-height:1.1; }
+    p.lead { font-size:1.05rem; color:#475569; margin-top:4px; }
+  form { margin:32px auto 0; width:100%; max-width:640px; background:#fff; padding:28px 28px 34px; border:1px solid #e2e8f0; border-radius:18px; box-shadow:0 8px 24px rgba(16,24,40,0.08); }
+    label { display:block; font-weight:600; margin-bottom:6px; color:#0f172a; }
+    input[type=email], textarea { width:100%; padding:14px 16px; font:inherit; border:1px solid #cbd5e1; border-radius:12px; background:#fff; resize:vertical; min-height:54px; }
+    textarea { min-height:160px; line-height:1.4; }
+    input:focus, textarea:focus { outline:none; border-color:#2563eb; box-shadow:0 0 0 3px rgba(37,99,235,0.15); }
+    .req { color:#dc2626; margin-left:2px; }
+    .actions { margin-top:24px; display:flex; gap:12px; align-items:center; }
+    button { background:#2563eb; border:none; color:#fff; font-weight:600; padding:14px 22px; border-radius:14px; cursor:pointer; font-size:15px; letter-spacing:.3px; box-shadow:0 2px 4px rgba(0,0,0,0.08); transition:background .18s,transform .08s; }
+    button:hover { background:#1d4ed8; }
+    button:active { transform:translateY(1px); }
+    button:disabled { background:#94a3b8; cursor:not-allowed; }
+    .status { font-size:14px; color:#475569; }
+    .error { color:#dc2626; font-weight:500; }
+    .success { color:#15803d; font-weight:500; }
+    nav { margin-bottom:28px; font-size:14px; }
+    nav a { color:#2563eb; text-decoration:none; }
+    nav a:hover { text-decoration:underline; }
+  footer { margin-top:auto; padding-top:48px; font-size:14px; color:#64748b; text-align:center; }
+    footer a { color:#2563eb; text-decoration:none; }
+    footer a:hover { text-decoration:underline; }
+    @media (max-width:680px){ body{padding:32px 18px 64px;} form{padding:22px 20px 30px;} button{width:100%;} .actions{flex-direction:column; align-items:stretch;} }
+  </style>
+</head>
+<body>
+  <nav><a href="index.html">← Back to Home</a></nav>
+  <h1>Support</h1>
+  <p class="lead">Having an issue or feature request? Send it below — we'll follow up by email.</p>
+
+  <form id="supportForm" novalidate>
+    <div>
+      <label for="email">Email <span class="req" aria-hidden="true">*</span></label>
+      <input id="email" name="email" type="email" required autocomplete="email" placeholder="you@example.com" />
+    </div>
+    <div style="margin-top:18px;">
+      <label for="issue">Issue / Feedback <span class="req" aria-hidden="true">*</span></label>
+      <textarea id="issue" name="issue" required placeholder="Describe the problem, steps to reproduce, expected result, etc."></textarea>
+    </div>
+    <div class="actions">
+      <button type="submit" id="submitBtn">Send</button>
+  <output id="formStatus" class="status" aria-live="polite"></output>
+    </div>
+  </form>
+
+  <footer>
+    <a href="privacy.html">Privacy Policy</a>
+  </footer>
+
+  <script>
+    // Simple GitHub Pages friendly submission using a mailto fallback + optional Formspree (replace with your backend later)
+    (function(){
+      const form = document.getElementById('supportForm');
+      const emailEl = document.getElementById('email');
+      const issueEl = document.getElementById('issue');
+      const statusEl = document.getElementById('formStatus');
+      const submitBtn = document.getElementById('submitBtn');
+
+      // Optional: configure a lightweight endpoint (Formspree demo). Replace with your own if desired.
+      const ENDPOINT = null; // e.g. 'https://formspree.io/f/yourId' or your server endpoint
+
+      function setStatus(msg, kind){
+        statusEl.textContent = msg || ''; 
+        statusEl.className = 'status' + (kind ? ' ' + kind : '');
+      }
+      function isValidEmail(v){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);} 
+
+      form.addEventListener('submit', async function(e){
+        e.preventDefault();
+        setStatus('', '');
+        const email = emailEl.value.trim();
+        const issue = issueEl.value.trim();
+        if(!email || !issue){ setStatus('Please fill in required fields.', 'error'); return; }
+        if(!isValidEmail(email)){ setStatus('Enter a valid email.', 'error'); return; }
+
+        submitBtn.disabled = true; setStatus('Sending…');
+
+        if(ENDPOINT){
+          try {
+            const res = await fetch(ENDPOINT, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ email, issue, userAgent: navigator.userAgent }) });
+            if(res.ok){
+              form.reset();
+              setStatus('Sent! We\'ll reply soon.', 'success');
+            } else {
+              setStatus('Failed to send (endpoint error). Using email instead…', 'error');
+              fallbackMailto(email, issue);
+            }
+          } catch(err){
+            console.error(err);
+            setStatus('Network error. Opening your email client…', 'error');
+            fallbackMailto(email, issue);
+          } finally { submitBtn.disabled = false; }
+        } else {
+          // Direct mailto fallback (no server). Works on GitHub Pages.
+          fallbackMailto(email, issue);
+          submitBtn.disabled = false;
+          setStatus('Opening your email client… If it did not open, email us at cemilenfal@gmail.com.', 'success');
+          form.reset();
+        }
+      });
+
+      function fallbackMailto(email, issue){
+        const subject = encodeURIComponent('[Subs Please Support] ' + issue.slice(0, 60));
+        const body = encodeURIComponent('Email: ' + email + '\n\nIssue / Feedback:\n' + issue + '\n\n--\nUser Agent: ' + navigator.userAgent + '\n');
+        const mailto = 'mailto:cemilenfal@gmail.com?subject=' + subject + '&body=' + body;
+        // Use window.location to attempt to open default mail client
+        window.location.href = mailto;
+      }
+    })();
+  </script>
+</body>
+</html>
